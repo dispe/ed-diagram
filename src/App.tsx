@@ -50,6 +50,7 @@ const ContentBox = styled('div')({
   display: 'flex',
   flexDirection: 'row',
   backgroundColor: 'yellow',
+  height: 'calc(100vh - 64px)',
 });
 
 const FooterBox = styled('div')(({ theme }) => ({

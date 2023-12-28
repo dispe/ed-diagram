@@ -1,10 +1,22 @@
+import { Excalidraw } from '@excalidraw/excalidraw';
 import React from 'react';
+import { styled } from '@mui/material';
 
-const Content: React.FC = ( (props) => {
+
+
+const ContentBox = styled('div')({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const Content: React.FC = ((props) => {
 
   return (
     <>
-      <h1>Content {JSON.stringify(props)} </h1>
+      <ContentBox>
+        <Excalidraw gridModeEnabled={true} />
+      </ContentBox>
     </>
   );
 
