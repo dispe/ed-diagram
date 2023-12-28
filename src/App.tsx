@@ -65,10 +65,9 @@ const FooterBox = styled('div')(({ theme }) => ({
 
 const App = () => {
 
-  const [
-    excalidrawAPI,
-    setExcalidrawAPI
-  ] = useState<ExcalidrawImperativeAPI | null>(null);
+  // we need to store the excalidraw API in order to use it in all components
+  // it is set by the Excalidraw component
+  const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
 
   const excalidrawAPIHandler = (api: ExcalidrawImperativeAPI) => {
     setExcalidrawAPI(api);

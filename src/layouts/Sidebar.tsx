@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled, Button } from '@mui/material';
-import { restoreElements } from '@excalidraw/excalidraw';
+import { restoreElements, restoreAppState } from '@excalidraw/excalidraw';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
 
 type SidebarProps = {
@@ -23,50 +23,94 @@ const Sidebar: React.FC<SidebarProps> = ({ position, excalidrawAPI }) => {
 
   
 const updateScene = () => {
+
+  const receivedElements = [
+    {
+      type: 'rectangle',
+      version: 141,
+      versionNonce: 361174001,
+      isDeleted: false,
+      id: 'oDVXy8D6rom3H1-LLH2-f',
+      fillStyle: 'hachure',
+      strokeWidth: 1,
+      strokeStyle: 'solid',
+      roughness: 1,
+      opacity: 100,
+      angle: 0,
+      x: 100.50390625,
+      y: 93.67578125,
+      strokeColor: '#c92a2a',
+      backgroundColor: 'transparent',
+      width: 186.47265625,
+      height: 141.9765625,
+      seed: 1968410350,
+      frameId: null,
+      groupIds: [],
+      boundElements: null,
+      locked: false,
+      link: null,
+      updated: 1,
+      roundness: {
+        type: 3,
+        value: 32
+      }
+    },
+    {
+      type: 'circle',
+      version: 141,
+      versionNonce: 361174001,
+      isDeleted: false,
+      id: 'oDVXy8D6rom3H1-LLH2-f',
+      fillStyle: 'hachure',
+      strokeWidth: 1,
+      strokeStyle: 'solid',
+      roughness: 1,
+      opacity: 100,
+      angle: 0,
+      x: 100.50390625,
+      y: 93.67578125,
+      strokeColor: '#c92a2a',
+      backgroundColor: 'transparent',
+      width: 186.47265625,
+      height: 141.9765625,
+      seed: 1968410350,
+      frameId: null,
+      groupIds: [],
+      boundElements: null,
+      locked: false,
+      link: null,
+      updated: 1,
+      roundness: {
+        type: 3,
+        value: 32
+      }
+    }
+  ];
+  const existingElements = excalidrawAPI?.getSceneElements();
+  const combinedElements = [...receivedElements, ...(existingElements ?? [])];
+
+  console.log(receivedElements);
+  console.log(existingElements);
+  console.log(combinedElements);
+
   const sceneData = {
-    elements: restoreElements(
-      [
-        {
-          type: 'rectangle',
-          version: 141,
-          versionNonce: 361174001,
-          isDeleted: false,
-          id: 'oDVXy8D6rom3H1-LLH2-f',
-          fillStyle: 'hachure',
-          strokeWidth: 1,
-          strokeStyle: 'solid',
-          roughness: 1,
-          opacity: 100,
-          angle: 0,
-          x: 100.50390625,
-          y: 93.67578125,
-          strokeColor: '#c92a2a',
-          backgroundColor: 'transparent',
-          width: 186.47265625,
-          height: 141.9765625,
-          seed: 1968410350,
-          frameId: null,
-          groupIds: [],
-          boundElements: null,
-          locked: false,
-          link: null,
-          updated: 1,
-          roundness: {
-            type: 3,
-            value: 32
-          }
-        }
-      ],
-      null
-    ),
+    elements: restoreElements(combinedElements, null),
     appState: {
       viewBackgroundColor: '#edf2ff'
     }
   };
   console.log(sceneData);
   
+
+  console.log(excalidrawAPI?.id);
   excalidrawAPI?.updateScene(sceneData);
 };
+
+const resetScene = () => {
+  excalidrawAPI!.id = 'test';
+  excalidrawAPI?.resetScene();
+  console.log(excalidrawAPI?.id);
+}
 
 
   return (
@@ -78,6 +122,9 @@ const updateScene = () => {
       </Button>
       <Button variant="outlined" color="error">
         Save
+      </Button>
+      <Button variant="outlined" color="error" onClick={resetScene}>
+        Reset
       </Button>
 
     </SidebarBox>
