@@ -2,11 +2,10 @@ import React from 'react';
 import { styled, Button } from '@mui/material';
 import { restoreElements } from '@excalidraw/excalidraw';
 import { ImportedDataState } from '@excalidraw/excalidraw/types/data/types';
-import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { useExcalidrawAPI } from '../utils/ExcalidrawAPIContext';
 
 type SidebarProps = {
   position: 'left' | 'right';
-  excalidrawAPI: ExcalidrawImperativeAPI | null;
 };
 
 const getSidebarBox = (position: SidebarProps['position']) => styled('div')(({ theme }) => ({
@@ -18,8 +17,9 @@ const getSidebarBox = (position: SidebarProps['position']) => styled('div')(({ t
   marginRight: position === 'right' ? 0 : 'auto',
 }));
 
-const Sidebar: React.FC<SidebarProps> = ({ position, excalidrawAPI }) => {
+const Sidebar: React.FC<SidebarProps> = ({ position }) => {
   const SidebarBox = getSidebarBox(position);
+  const { excalidrawAPI } = useExcalidrawAPI();
 
 
   const updateScene = () => {

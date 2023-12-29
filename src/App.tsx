@@ -29,6 +29,7 @@ import Content from './layouts/Content';
 import Footer from './layouts/Footer';
 import { styled } from '@mui/material';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { ExcalidrawAPIContext } from './utils/ExcalidrawAPIContext';
 
 const LayoutBox = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -65,26 +66,20 @@ const FooterBox = styled('div')(({ theme }) => ({
 
 const App = () => {
 
-  const [
-    excalidrawAPI,
-    setExcalidrawAPI
-  ] = useState<ExcalidrawImperativeAPI | null>(null);
-
-  const excalidrawAPIHandler = (api: ExcalidrawImperativeAPI) => {
-    setExcalidrawAPI(api);
-  };
-
+  const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
 
   return (
-    <LayoutBox>
-      <HeaderBox><Header /></HeaderBox>
-      <ContentBox>
-        <Sidebar position='left' excalidrawAPI={excalidrawAPI} />
-        <Content excalidrawAPIHandler={excalidrawAPIHandler} />
-        <Sidebar position='right' excalidrawAPI={excalidrawAPI} />
-      </ContentBox>
-      <FooterBox><Footer /></FooterBox>
-    </LayoutBox>
+    <ExcalidrawAPIContext.Provider value={{ excalidrawAPI, setExcalidrawAPI }}>
+      <LayoutBox>
+        <HeaderBox><Header /></HeaderBox>
+        <ContentBox>
+          <Sidebar position='left' />
+          <Content />
+          <Sidebar position='right' />
+        </ContentBox>
+        <FooterBox><Footer /></FooterBox>
+      </LayoutBox>
+    </ExcalidrawAPIContext.Provider>
   );
 };
 

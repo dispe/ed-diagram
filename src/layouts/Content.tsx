@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { useExcalidrawAPI } from '../utils/ExcalidrawAPIContext';
 
 const ContentBox = styled('div')({
   flex: 1,
@@ -9,11 +10,13 @@ const ContentBox = styled('div')({
   flexDirection: 'column',
 });
 
-type ContentProps = {
-  excalidrawAPIHandler: (api: ExcalidrawImperativeAPI) => void;
-};
 
-const Content: React.FC<ContentProps> = (({ excalidrawAPIHandler }) => {
+const Content: React.FC = (() => {
+  const { setExcalidrawAPI } = useExcalidrawAPI();
+
+  const excalidrawAPIHandler = (excalidrawAPI: ExcalidrawImperativeAPI) => {
+    setExcalidrawAPI(excalidrawAPI);
+  };
 
   return (
     <>
