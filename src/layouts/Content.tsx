@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { useDispatch } from 'react-redux';
 
 const ContentBox = styled('div')({
   flex: 1,
@@ -9,18 +10,19 @@ const ContentBox = styled('div')({
   flexDirection: 'column',
 });
 
-type ContentProps = {
-  excalidrawAPIHandler: (api: ExcalidrawImperativeAPI) => void;
-};
+const Content: React.FC = (() => {
+  const dispatch = useDispatch();
 
-const Content: React.FC<ContentProps> = (( { excalidrawAPIHandler } ) => {
+  const setExcalidrawAPI = (excalidrawAPI: ExcalidrawImperativeAPI) => {
+    dispatch({ type: 'SET_EXCALIDRAW_API', payload: excalidrawAPI });
+  };
 
   return (
     <>
       <ContentBox>
-        <Excalidraw 
+        <Excalidraw
           gridModeEnabled={true}
-          excalidrawAPI={(api: ExcalidrawImperativeAPI) => excalidrawAPIHandler(api)}
+          excalidrawAPI={setExcalidrawAPI}
         />
       </ContentBox>
     </>
