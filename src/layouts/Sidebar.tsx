@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled, Button } from '@mui/material';
 import { restoreElements } from '@excalidraw/excalidraw';
 import { ImportedDataState } from '@excalidraw/excalidraw/types/data/types';
 import { useExcalidrawAPI } from '../utils/ExcalidrawAPIContext';
+import { useDiagram } from '../utils/ExcalidrawAPIContext';
+import SaveDialog from '../components/SaveDialog';
 
 type SidebarProps = {
   position: 'left' | 'right';
@@ -20,7 +22,8 @@ const getSidebarBox = (position: SidebarProps['position']) => styled('div')(({ t
 const Sidebar: React.FC<SidebarProps> = ({ position }) => {
   const SidebarBox = getSidebarBox(position);
   const { excalidrawAPI } = useExcalidrawAPI();
-
+  const diagram = useDiagram();
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
 
   const updateScene = () => {
 
@@ -96,13 +99,19 @@ const Sidebar: React.FC<SidebarProps> = ({ position }) => {
     const sceneData = {
       elements: restoreElements(combinedElements as ImportedDataState['elements'], null),
       appState: {
-        viewBackgroundColor: '#edf2ff'
+        viewBackgroundColor: '#edf2ff',
+        name: 'test-name123',
       }
     };
     console.log(sceneData);
 
 
     console.log(excalidrawAPI?.id);
+    console.log(excalidrawAPI?.getAppState().name);
+
+    console.log("Diagram: " + diagram?.name);
+    console.log(diagram);
+
     excalidrawAPI?.updateScene(sceneData);
   };
 
@@ -112,20 +121,28 @@ const Sidebar: React.FC<SidebarProps> = ({ position }) => {
     console.log(excalidrawAPI?.id);
   }
 
+  const openSaveDialog = () => {
+    setIsSaveDialogOpen(true);
+  };
+
+  const closeSaveDialog = () => {
+    setIsSaveDialogOpen(false);
+  };
+
   return (
     <SidebarBox>
       <h1>Sidebar position: {position} </h1>
 
-      <Button variant="contained" color="success" onClick={updateScene}>
-        Load
-      </Button>
-      <Button variant="outlined" color="error">
-        Save
-      </Button>
       <Button variant="outlined" color="error" onClick={resetScene}>
         Reset
       </Button>
-
+      <Button variant="contained" color="success" onClick={updateScene}>
+        Load
+      </Button>
+      <Button variant="outlined" color="error" onClick={openSaveDialog}>
+        Save
+      </Button>
+      <SaveDialog isOpen={isSaveDialogOpen} handleClose={closeSaveDialog} />
     </SidebarBox>
   );
 };
