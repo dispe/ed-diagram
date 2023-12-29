@@ -23,14 +23,12 @@
   The footer row is on the bottom (third row) with a fixed height and will not leave the viewport by scrolling
 */
 
-import React from 'react';
-import Header from './layouts/Header';
+import React, { useState } from 'react'; import Header from './layouts/Header';
 import Sidebar from './layouts/Sidebar';
 import Content from './layouts/Content';
 import Footer from './layouts/Footer';
 import { styled } from '@mui/material';
-import { Provider } from 'react-redux';
-import { store } from './utils/store';
+import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
 
 const LayoutBox = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -67,18 +65,26 @@ const FooterBox = styled('div')(({ theme }) => ({
 
 const App = () => {
 
+  const [
+    excalidrawAPI,
+    setExcalidrawAPI
+  ] = useState<ExcalidrawImperativeAPI | null>(null);
+
+  const excalidrawAPIHandler = (api: ExcalidrawImperativeAPI) => {
+    setExcalidrawAPI(api);
+  };
+
+
   return (
-    <Provider store={store}>
-      <LayoutBox>
-        <HeaderBox><Header /></HeaderBox>
-        <ContentBox>
-          <Sidebar position='left' />
-          <Content />
-          <Sidebar position='right' />
-        </ContentBox>
-        <FooterBox><Footer /></FooterBox>
-      </LayoutBox>
-    </Provider>
+    <LayoutBox>
+      <HeaderBox><Header /></HeaderBox>
+      <ContentBox>
+        <Sidebar position='left' excalidrawAPI={excalidrawAPI} />
+        <Content excalidrawAPIHandler={excalidrawAPIHandler} />
+        <Sidebar position='right' excalidrawAPI={excalidrawAPI} />
+      </ContentBox>
+      <FooterBox><Footer /></FooterBox>
+    </LayoutBox>
   );
 };
 
