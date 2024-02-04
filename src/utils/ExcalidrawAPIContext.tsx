@@ -1,6 +1,10 @@
 import { createContext, useContext } from 'react';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
-import { Diagram } from '../models/Diagram';
+
+// interface ExcalidrawAPIExtended extends ExcalidrawImperativeAPI {
+//   dbId: string;
+//   name: string;
+// }
 
 type ExcalidrawAPIContextType = {
   excalidrawAPI: ExcalidrawImperativeAPI | null;
@@ -17,12 +21,3 @@ export function useExcalidrawAPI() {
   return context;
 }
 
-export const DiagramContext = createContext<Diagram | null>(null);
-
-export function useDiagram() {
-  const context = useContext(DiagramContext);
-  if (!context) {
-    throw new Error('useDiagram must be used within a DiagramProvider');
-  }
-  return context;
-}

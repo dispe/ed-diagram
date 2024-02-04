@@ -3,7 +3,6 @@ import { styled, Button } from '@mui/material';
 import { restoreElements } from '@excalidraw/excalidraw';
 import { ImportedDataState } from '@excalidraw/excalidraw/types/data/types';
 import { useExcalidrawAPI } from '../utils/ExcalidrawAPIContext';
-import { useDiagram } from '../utils/ExcalidrawAPIContext';
 import SaveDialog from '../components/SaveDialog';
 
 type SidebarProps = {
@@ -22,7 +21,6 @@ const getSidebarBox = (position: SidebarProps['position']) => styled('div')(({ t
 const Sidebar: React.FC<SidebarProps> = ({ position }) => {
   const SidebarBox = getSidebarBox(position);
   const { excalidrawAPI } = useExcalidrawAPI();
-  const diagram = useDiagram();
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
 
   const updateScene = () => {
@@ -108,9 +106,6 @@ const Sidebar: React.FC<SidebarProps> = ({ position }) => {
 
     console.log(excalidrawAPI?.id);
     console.log(excalidrawAPI?.getAppState().name);
-
-    console.log("Diagram: " + diagram?.name);
-    console.log(diagram);
 
     excalidrawAPI?.updateScene(sceneData);
   };

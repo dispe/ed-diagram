@@ -29,8 +29,7 @@ import Content from './layouts/Content';
 import Footer from './layouts/Footer';
 import { styled } from '@mui/material';
 import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
-import { DiagramContext, ExcalidrawAPIContext } from './utils/ExcalidrawAPIContext';
-import { Diagram } from './models/Diagram';
+import { ExcalidrawAPIContext } from './utils/ExcalidrawAPIContext';
 
 const LayoutBox = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -68,11 +67,9 @@ const FooterBox = styled('div')(({ theme }) => ({
 const App = () => {
 
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI | null>(null);
-  const diagram = new Diagram(null, 'No name from App');
 
   return (
     <ExcalidrawAPIContext.Provider value={{ excalidrawAPI, setExcalidrawAPI }}>
-      <DiagramContext.Provider value={diagram}>
         <LayoutBox>
           <HeaderBox><Header /></HeaderBox>
           <ContentBox>
@@ -82,7 +79,6 @@ const App = () => {
           </ContentBox>
           <FooterBox><Footer /></FooterBox>
         </LayoutBox>
-      </DiagramContext.Provider>
     </ExcalidrawAPIContext.Provider>
   );
 };

@@ -1,22 +1,10 @@
-// SaveDialog.tsx
-import React, { useEffect } from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
+import React from 'react';
+import {
+  Dialog, DialogTitle, DialogContent, DialogActions, FormControl,
+  TextField, Box
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import { useExcalidrawAPI } from '../utils/ExcalidrawAPIContext';
-import { ExcalidrawElement, ExcalidrawTextElement } from '@excalidraw/excalidraw/types/element/types';
-import { Scene as SceneInterface } from '@excalidraw/excalidraw/types/scene/types';
-import Scene from "@excalidraw/excalidraw/types/scene/Scene";
-
-
-
-export interface VEDScene extends SceneInterface {
-  id: string;
-  name: string;
-  elements: ExcalidrawTextElement[];
-}
 
 type SaveDialogProps = {
   isOpen: boolean;
@@ -25,31 +13,61 @@ type SaveDialogProps = {
 
 const SaveDialog: React.FC<SaveDialogProps> = ({ isOpen, handleClose }) => {
   const { excalidrawAPI } = useExcalidrawAPI();
-  const [elements, setElements] = React.useState<ExcalidrawElement[]>([]);
 
-  useEffect(() => {
-    if (isOpen && excalidrawAPI) {
-      const currentElements = excalidrawAPI?.getSceneElements();
-      setElements([...currentElements]);
-      excalidrawAPI.name = 'test-name111';
 
-      // const sceneData = excalidrawAPI.getSceneData();
-      // console.log(sceneData);
-    }
-  }, [isOpen]);
+  const currentElements = excalidrawAPI?.getSceneElements();
+  const requestObject = {
+    id: excalidrawAPI?.id,
+    name: excalidrawAPI?.getAppState().name,
+    elements: currentElements || [],
+  };
+
+const handleSave = () => {
+    console.log(requestObject);
+    handleClose();
+};
+
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
       <DialogTitle>Save your work</DialogTitle>
       <DialogContent>
-        There are {elements.length} elements in the scene.
+        <form noValidate autoComplete="off">
+          <FormControl sx={{ width: '50ch' }}>
+            <Box margin={2}>
+              <TextField
+                label="ID"
+                value={requestObject.id}
+                InputProps={{
+                  readOnly: true,
+                }}
+                fullWidth
+              />
+            </Box>
+            <Box margin={2}>
+              <TextField
+                label="Name"
+                defaultValue={requestObject.name}
+                fullWidth
+              />
+            </Box>
+            <Box margin={2}>
+              <TextField
+                label="Count of Elements"
+                value={ requestObject?.elements.length || 0 }
+                InputProps={{
+                  readOnly: true,
+                }}
+                fullWidth
+              />
+            </Box>
+          </FormControl>
+        </form>
+
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={() => {
-          // Add your save logic here
-          handleClose();
-        }}>Save</Button>
+        <Button onClick={handleSave}>Save</Button>
       </DialogActions>
     </Dialog>
   );
